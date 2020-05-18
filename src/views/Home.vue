@@ -9,19 +9,34 @@
             locale="es-mx"
             :min="minimo"
             :max="maximo"
-            @change="getDolar(date)"
+            @change="getDolar(date, base)"
             color="info"
             >
 
             </v-date-picker>
           </v-card>
           <v-card class="mx-auto" max-width="800" color="accent">
-            <v-card-text class="title text-center d-flex justify-content-around ">
-                  <select v-model="selected" class="text--darken-1">
-                    <option disabled value=""> Currency </option>
-                    <option v-for="(value, key) in rates" :key="key" :value="value">{{ key }}</option>                      
-                  </select>
-                    <span dark>-Rate: {{ selected }}</span>
+            <v-card-text class="title">
+                  <v-row justify="center" no-gutters>
+                    <v-col xs="2"><p class="font-weight-black">From:</p></v-col>
+                    <v-col xs="2">
+                      <select v-model="base" class="font-weight-medium" @change="getDolar(date, base)">
+                        <option disabled value="" > {{ base }} </option>
+                        <option v-for="(value, key) of rates" :key="key" :value="key">{{ key }}</option>                      
+                      </select>
+                    </v-col>
+                    <v-col xs="2"><p class="font-weight-black">To:</p></v-col>
+                    <v-col xs="2">
+                       <select v-model="selected" class="font-weight-medium">
+                        <option disabled value=""> Currency </option>
+                        <option v-for="(value, key) in rates" :key="key" :value="value">{{ key }}</option>                      
+                      </select>
+                    </v-col>
+                   <v-col xs="2">
+                      <span dark>Rate: {{ selected }}</span>                     
+                   </v-col>
+                  
+                  </v-row>                
                 
             </v-card-text>
           </v-card>
@@ -40,18 +55,20 @@ import {mapMutations} from 'vuex'
 export default {
   data(){
     return{
-      date: '',
+      date: new Date().toISOString().substr(0, 10),
       minimo:'1999',
       maximo: new Date().toISOString().substr(0, 10),
       rates: [],
       selected:'',
+      round:'',
+      base:'USD',
       valor:''
     }
   },
   methods: {
     ...mapMutations(['mostrarDialog', 'ocultarDialog']),
 
-      async getDolar(dia){
+      async getDolar(dia, base){
       this.selected = ''
       // let arrayDia = dia.split(['-'])          /* Invertir las fechas */
       // let ddmmyy = arrayDia[2]+ '-' + arrayDia[1]+ '-' + arrayDia[0]
@@ -60,11 +77,11 @@ export default {
       try {
         this.mostrarDialog({titulo:'Accediendo a Informacion', color:'secundary'})
 
-        let datos = await axios.get(`https://api.exchangeratesapi.io/${dia}`)
+        let datos = await axios.get(`https://api.exchangeratesapi.io/${dia}?base=${base}`)
           
         if(datos.data.date != null){
           this.rates = datos.data.rates  
-          // console.log(datos.data)                    
+                      console.log( datos.data)
         }else{
           this.valor = 'Sin resultados'
         }
@@ -73,11 +90,17 @@ export default {
       }finally{
         this.ocultarDialog()
       }
-    }
+    },
+    // roundNumber(number){
+    //   let a = parseInt(number)      
+    //   // this.round = a.toFixed(3)
+    //   console.log(a)
+    // }
   },
   created() {
-    this.getDolar('latest')
-  },
+    this.getDolar('latest', this.base)
+  }
+  
  
 }
 </script>

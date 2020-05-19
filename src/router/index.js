@@ -8,8 +8,18 @@ Vue.use(VueRouter)
   {
     path: '/',
     name: 'Home',
-    component: () => import(/* webpackChunkName: "about" */ '../views/Home.vue') 
+    component: () => import(/* webpackChunkName: "Home" */ '../views/Home.vue') 
    },
+   {
+     path:'/currency',
+     name:'Currency',
+     component: () => import(/* webpackChunkName: "Home" */ '../views/Currency.vue')
+   },
+   {
+     path: '/weather',
+     name: 'Weather',
+     component: () => import('../views/Weather.vue')
+   }
   
 ]
 

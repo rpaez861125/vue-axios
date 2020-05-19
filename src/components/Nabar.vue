@@ -8,9 +8,25 @@
     >
       <!-- <v-app-bar-nav-icon></v-app-bar-nav-icon> -->
 
-      <v-toolbar-title>Page title</v-toolbar-title>
-
-      <v-spacer></v-spacer>
+        <v-toolbar-title> 
+            <v-btn style="text-transform: none" text :to="{name: 'Home'}" exact>Axios</v-btn> 
+        </v-toolbar-title>
+        <v-btn 
+        text 
+        style="text-transform: none"       
+        :to="{name: 'Currency'}"
+        >
+        Currency
+        </v-btn>
+        <v-btn 
+        text 
+        style="text-transform: none"       
+        :to="{name: 'Weather'}"
+        >
+        Weather
+        </v-btn>
+        
+        <v-spacer></v-spacer>
 
       <v-btn icon>
         <v-icon>mdi-heart</v-icon>

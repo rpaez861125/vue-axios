@@ -3,6 +3,7 @@
          <v-navigation-drawer
           permanent
           expand-on-hover
+          right
           app
         >
           <v-list>

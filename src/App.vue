@@ -4,6 +4,7 @@
 
     <v-content>     
         <router-view/> 
+        <!-- Proceso de acceso a los datos -->
           <v-dialog
             v-model="loading.stado"
             hide-overlay
@@ -23,7 +24,20 @@
               ></v-progress-linear>
             </v-card-text>
           </v-card>
-        </v-dialog>      
+        </v-dialog>
+
+       <!-- Alerta cuando hay errores  -->
+       <v-dialog
+            v-model="loadingAlert.stado"
+            hide-overlay
+            persistent
+            width="400"
+          >
+          <v-alert v-model="loadingAlert.stado" type="error" dismissible="true" absolute="true">
+           {{loadingAlert.titulo}} 
+          </v-alert>         
+        </v-dialog>
+        
     </v-content>
   </v-app>
 </template>
@@ -41,7 +55,7 @@ export default {
     //
   }),
   computed: {
-    ...mapState(['loading'])
+    ...mapState(['loading', 'loadingAlert'])
   },
 };
 </script>

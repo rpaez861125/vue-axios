@@ -9,7 +9,13 @@ export default new Vuex.Store({
       titulo: '',
       color: 'primary',
       stado: false
+    },
+    loadingAlert:{
+      titulo:'',
+      stado: false,
+      color:'error'
     }
+    
   },
   mutations: {
 
@@ -21,7 +27,17 @@ export default new Vuex.Store({
 
     ocultarDialog(state){
       state.loading.stado = false
+    },
+
+    mostrarAlert(state, payLoad){
+      state.loadingAlert.titulo = payLoad.titulo
+      state.loadingAlert.stado = true
+    },
+
+    ocultarAlert(state){
+      state.loadingAlert.stado = false
     }
+
 
   },
   actions: {
